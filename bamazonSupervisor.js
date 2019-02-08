@@ -7,7 +7,7 @@ var connection = mysql.createConnection({
     host: "localhost",
     port: 3306,
     user: "root",
-    password: "",
+    password: "yourPassword",
     database: "bamazon"
 });
 
@@ -24,7 +24,7 @@ function menuOptions(){
         type: "list",
         name: "itemChoice",
         message: "What would you like to do?",
-        choices: ["View Product Sales by Department", "Create New Department"]
+        choices: ["View Product Sales by Department", "Create New Department", "Exit"]
         }
     ]).then(function (inquirerResponse) {
         switch (inquirerResponse.itemChoice) {
@@ -33,6 +33,10 @@ function menuOptions(){
                 break;
             case "Create New Department":
                 createNewDepartment();
+                break;
+            case "Exit":
+                connection.end();
+                process.exit();
                 break;
             default:
                 break;
@@ -67,4 +71,34 @@ function viewByDepartment(){
         console.table(all_departments);
         menuOptions();
     });
+}
+
+function createNewDepartment(){
+
+    inquirer.prompt([
+        {
+            type: "input",
+            message: "What is the name of the new department?",
+            name: "name"
+        },
+        {
+            type: "input",
+            message: "What is the overhead costs for the new department?",
+            name: "overhead"
+        }
+        ])
+        .then(function(inquirerResponse) {
+            var query = connection.query(
+                "INSERT INTO departments SET ?",
+                {
+                  department_name: inquirerResponse.name,
+                  over_head_costs: inquirerResponse.overhead
+                },
+                function(err, res) {
+                  console.log(res.affectedRows + " department added!\n");
+                  menuOptions();
+                }
+            )
+        });
+
 }

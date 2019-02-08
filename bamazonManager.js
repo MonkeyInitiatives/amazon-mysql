@@ -6,7 +6,7 @@ var connection = mysql.createConnection({
     host: "localhost",
     port: 3306,
     user: "root",
-    password: "",
+    password: "yourPassword",
     database: "bamazon"
 });
 
@@ -23,7 +23,7 @@ function menuOptions(){
         type: "list",
         name: "itemChoice",
         message: "What would you like to do?",
-        choices: ["View Products for Sale", "View Low Inventory", "Add to Inventory", "Add New Products"]
+        choices: ["View Products for Sale", "View Low Inventory", "Add to Inventory", "Add New Products", "Exit"]
         }
     ]).then(function (inquirerResponse) {
         switch (inquirerResponse.itemChoice) {
@@ -38,6 +38,10 @@ function menuOptions(){
                 break;
             case "Add New Products":
                 addNewProduct();
+                break;
+            case "Exit":
+                connection.end();
+                process.exit();
                 break;
             default:
                 break;
@@ -95,12 +99,10 @@ function addToInventory(){
 }
 
 function updateInventory(id, units){
+    var searchQuery = "UPDATE products SET stock_quantity = stock_quantity + "+units+" WHERE ?";
     var query = connection.query(
-        "UPDATE products SET ? WHERE ?",
+        searchQuery,
         [
-            {
-            stock_quantity: units
-            },
             {
             id: id
             }

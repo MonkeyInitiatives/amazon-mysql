@@ -6,7 +6,7 @@ var connection = mysql.createConnection({
     host: "localhost",
     port: 3306,
     user: "root",
-    password: "",
+    password: "yourPassword",
     database: "bamazon"
 });
 
@@ -55,41 +55,38 @@ function stockChecker(id, units){
         if (err) throw err;
         currentStock = parseInt(res[0].stock_quantity);
         currentPrice = parseInt(res[0].price);
-        console.log(currentStock);
         if(parseInt(units)>currentStock){
             console.log("Insufficient quantity!");
             storeOpening();
         }
         else{
             console.log("Thank you for your order. You spent "+(currentPrice*units) + " dollars.");
-            updateStock(id, currentStock-units, parseInt(res[0].product_units+(currentPrice*units)));
+            var updated_product_sales = res[0].product_sales+(currentPrice*units);
+            updateStock(id, currentStock-units, updated_product_sales);
         }
     });
 }
 
 function updateStock(id, units, sales){
-        if(units>0){
-            var query = connection.query(
-            "UPDATE products SET ? WHERE ?",
-            [
-                {
-                stock_quantity: units
-                },
-                {
-                id: id
-                },
-                {
-                product_sales: sales
-                }
-            ],
-            function(err, res) {
-                connection.end();
-            }
-            );
+    var query = connection.query(
+    "UPDATE products SET ?, ? WHERE ?",
+    [
+        {
+        stock_quantity: units
+        },
+        {
+        product_sales: sales
+        },
+        {
+        id: id
         }
-        else{
-            // removeStock(id);
-        }
+    ],
+    function(err, res) {
+        connection.end();
+    }
+    );
+        
+        
 }
 
 function removeStock(id){
