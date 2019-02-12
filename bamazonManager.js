@@ -1,6 +1,7 @@
 // Main landing page
 const inquirer = require("inquirer");
 const mysql = require("mysql");
+const cTable = require('console.table');
 
 var connection = mysql.createConnection({
     host: "localhost",
@@ -52,10 +53,18 @@ function menuOptions(){
 function listProducts(){
     connection.query("SELECT * FROM products", function(err, res) {
         if (err) throw err;
+        var all_items = [];
         for(key in res){
-            console.log("ID: "+res[key].id+" Product: "+res[key].product_name+" Price: "+res[key].price +" Quantity: "+res[key].stock_quantity);
+            // console.log("ID: "+res[key].id+" Product: "+res[key].product_name+" Price: "+res[key].price +" Quantity: "+res[key].stock_quantity);
+            var items = {
+                item_id: res[key].id,
+                product_name: res[key].product_name,
+                price: res[key].price,
+                quantity: res[key].stock_quantity, 
+            };
+            all_items.push(items);
         }
-        console.log("\n");
+        console.table(all_items);
         menuOptions();
     });
 }
@@ -63,12 +72,18 @@ function listProducts(){
 function listLowInventory(){
     connection.query("SELECT * FROM products", function(err, res) {
         if (err) throw err;
+        var all_items = [];
         for(key in res){
-            if(res[key].stock_quantity<=5){
-                console.log("ID: "+res[key].id+" Product: "+res[key].product_name+" Price: "+res[key].price +" Quantity: "+res[key].stock_quantity);
-            }
+            // console.log("ID: "+res[key].id+" Product: "+res[key].product_name+" Price: "+res[key].price +" Quantity: "+res[key].stock_quantity);
+            var items = {
+                item_id: res[key].id,
+                product_name: res[key].product_name,
+                price: res[key].price,
+                quantity: res[key].stock_quantity, 
+            };
+            all_items.push(items);
         }
-        console.log("\n");
+        console.table(all_items);
         menuOptions();
     });
 }
@@ -76,10 +91,18 @@ function listLowInventory(){
 function addToInventory(){
     connection.query("SELECT * FROM products", function(err, res) {
         if (err) throw err;
+        var all_items = [];
         for(key in res){
-            console.log("ID: "+res[key].id+" Product: "+res[key].product_name+" Price: "+res[key].price +" Quantity: "+res[key].stock_quantity);
+            // console.log("ID: "+res[key].id+" Product: "+res[key].product_name+" Price: "+res[key].price +" Quantity: "+res[key].stock_quantity);
+            var items = {
+                item_id: res[key].id,
+                product_name: res[key].product_name,
+                price: res[key].price,
+                quantity: res[key].stock_quantity, 
+            };
+            all_items.push(items);
         }
-        console.log("\n");
+        console.table(all_items);
         inquirer.prompt([
             {
                 type: "input",

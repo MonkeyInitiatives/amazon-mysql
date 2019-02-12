@@ -59,14 +59,14 @@ function viewByDepartment(){
         var all_departments = [];
 
         for(key in res){            
-            var theobject = {
+            var department = {
                 department_id: res[key].department_id,
                 department_name: res[key].department_name,
                 over_head_costs: res[key].over_head_costs,
                 product_sales: res[key].product_sales, 
                 total_profit: (res[key].product_sales-res[key].over_head_costs)
             };
-            all_departments.push(theobject);
+            all_departments.push(department);
         }
         console.table(all_departments);
         menuOptions();
