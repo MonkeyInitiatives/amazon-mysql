@@ -74,14 +74,16 @@ function listLowInventory(){
         if (err) throw err;
         var all_items = [];
         for(key in res){
+            if(res[key].stock_quantity<=5){
             // console.log("ID: "+res[key].id+" Product: "+res[key].product_name+" Price: "+res[key].price +" Quantity: "+res[key].stock_quantity);
-            var items = {
-                item_id: res[key].id,
-                product_name: res[key].product_name,
-                price: res[key].price,
-                quantity: res[key].stock_quantity, 
-            };
-            all_items.push(items);
+                var items = {
+                    item_id: res[key].id,
+                    product_name: res[key].product_name,
+                    price: res[key].price,
+                    quantity: res[key].stock_quantity, 
+                };
+                all_items.push(items);
+            }
         }
         console.table(all_items);
         menuOptions();
