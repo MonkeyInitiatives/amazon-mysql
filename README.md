@@ -16,6 +16,10 @@ The manager looks at the day to day operations of the program. They can view the
 
 A customer is presented with the inventory and is given the opprorunity to buy a product. The user enters in the item id and the number of units they wish to purchase. If there is enough stock to fulfill the order, the mysql database is updated to subtract the number of purchased items, and displays a bill to the customer that is a simple summation of the numbers of items purchased multiplied by the price of the item. 
 
+## Technologies
+
+Node, Express, Inquirer, MYSQL, and Console.Table.
+
 ### Notes
 
 Because this is a CLI application, the user must 'npm install' to install the required dependencies in the package.json file, which are inquirer, mysql, and console.table. 
